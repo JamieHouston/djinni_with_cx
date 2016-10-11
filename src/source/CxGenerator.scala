@@ -338,7 +338,7 @@ class CxGenerator(spec: Spec) extends Generator(spec) {
           val params = m.params.map(p => cxMarshal.paramType(p.ty) + " " + idCx.local(p.ident))
 
           w.wl(s"$ret $self::${idCx.method(m.ident)} ${params.mkString("(", ", ", ")")}").braced {
-            val paramsIn = m.params.map(p=>translate(p.ty.resolved, idCx.local(p.ident))).mkString("(", ", ", ")")
+            val paramsIn = m.params.map(p=>translate(p.ty.resolved, idCx.local(p.ident), Some(spec.cxNamespace))).mkString("(", ", ", ")")
             val obj = if(m.static) cppSelf + "::" else "_cppRef->"
             val call = obj + s"${idCpp.method(m.ident)}$paramsIn"
             //write ret
